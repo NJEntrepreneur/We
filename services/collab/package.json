@@ -1,0 +1,30 @@
+{
+  "name": "@platform/collab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc --noEmit",
+    "start": "node dist/main.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@platform/types": "workspace:*",
+    "@platform/utils": "workspace:*",
+    "fastify": "^4.0.0",
+    "ws": "^8.0.0",
+    "yjs": "^13.0.0",
+    "y-leveldb": "^0.1.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.0.0"
+  }
+}

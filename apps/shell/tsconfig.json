@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@platform/types": ["../../packages/sdk-types/src/index.ts"],
+      "@platform/events": ["../../packages/event-bus/src/index.ts"],
+      "@platform/ui": ["../../packages/design-system/src/index.ts"],
+      "@platform/sdk": ["../../packages/plugin-sdk/src/index.ts"],
+      "@platform/utils": ["../../packages/utils/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/sdk-types" },
+    { "path": "../../packages/event-bus" },
+    { "path": "../../packages/design-system" },
+    { "path": "../../packages/plugin-sdk" },
+    { "path": "../../packages/utils" }
+  ]
+}

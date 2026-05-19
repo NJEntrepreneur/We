@@ -62,3 +62,16 @@ export {
   AuditEntrySchema,
   type AuditEntry,
 } from './schemas/audit.js';
+
+export {
+  RegisterRequestSchema,
+  LoginRequestSchema,
+  AuthUserSchema,
+  AuthResponseSchema,
+  RefreshResponseSchema,
+  type RegisterRequest,
+  type LoginRequest,
+  type AuthUser,
+  type AuthResponse,
+  type RefreshResponse,
+} from './schemas/auth-requests.js';

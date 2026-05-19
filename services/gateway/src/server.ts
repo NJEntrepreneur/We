@@ -40,14 +40,10 @@ export async function buildServer(
   await registerRoutes(fastify, config);
 
   fastify.setErrorHandler((error, request, reply) => {
-    logger.error({
-      traceId: request.traceId,
-      message: 'Unhandled error',
-      error: error.message,
-      statusCode: error.statusCode ?? 500,
-    });
-    void reply.code(error.statusCode ?? 500).send({
-      error: error.message ?? 'Internal server error',
+    const statusCode = error.statusCode ?? 500;
+    logger.error(`Unhandled error: ${error.message}`, { traceId: request.traceId });
+    void reply.code(statusCode).send({
+      error: statusCode === 500 ? 'Internal server error' : error.message,
     });
   });
 

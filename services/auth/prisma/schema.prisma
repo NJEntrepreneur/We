@@ -1,0 +1,51 @@
+// §10: snake_case table/column names, uuid PKs at app layer, soft deletes via deleted_at
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  owner
+  admin
+  developer
+  viewer
+  plugin
+}
+
+model User {
+  id              String     @id
+  email           String     @unique
+  displayName     String     @map("display_name")
+  passwordHash    String?    @map("password_hash")
+  role            UserRole   @default(developer)
+  oauthProvider   String?    @map("oauth_provider")
+  oauthProviderId String?    @map("oauth_provider_id")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  deletedAt       DateTime?  @map("deleted_at")
+
+  tokenFamilies   RefreshTokenFamily[]
+
+  @@map("users")
+}
+
+model RefreshTokenFamily {
+  id        String    @id
+  userId    String    @map("user_id")
+  familyId  String    @map("family_id")
+  tokenHash String    @map("token_hash")
+  usedAt    DateTime? @map("used_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([familyId])
+  @@index([tokenHash])
+  @@map("refresh_token_families")
+}

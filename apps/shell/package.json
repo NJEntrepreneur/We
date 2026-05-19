@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.0",
     "@monaco-editor/react": "^4.6.0",
     "@platform/ui": "workspace:*",
     "@platform/events": "workspace:*",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
+    "@testing-library/jest-dom": "^6.4.0",
     "@testing-library/react": "^15.0.0",
     "@testing-library/user-event": "^14.5.0",
     "@types/react": "^18.3.0",

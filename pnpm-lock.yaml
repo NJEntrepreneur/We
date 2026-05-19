@@ -48,6 +48,9 @@ importers:
 
   apps/shell:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.3.0
+        version: 3.10.0(react-hook-form@7.76.0(react@18.3.1))
       '@monaco-editor/react':
         specifier: ^4.6.0
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -91,6 +94,9 @@ importers:
       '@playwright/test':
         specifier: ^1.44.0
         version: 1.60.0
+      '@testing-library/jest-dom':
+        specifier: ^6.4.0
+        version: 6.9.1
       '@testing-library/react':
         specifier: ^15.0.0
         version: 15.0.7(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1164,6 +1170,11 @@ packages:
     resolution: {integrity: sha512-wtF6h+DY6M3YaDBPAmvuuA6jV8Sif9MjtOI5euKFWRgCDl5PeDpPsHR9u2l6St5ceY8AZgoNDww5+HvEsXFsGg==}
     engines: {node: '>=6'}
     hasBin: true
+
+  '@hookform/resolvers@3.10.0':
+    resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
 
   '@inquirer/external-editor@1.0.3':
     resolution: {integrity: sha512-RWbSrDiYmO4LbejWY7ttpxczuwQyZLBUyygsA9Nsv95hpzUWwnNTVQmAq3xuh7vNwCp07UTmE5i11XAEExx4RA==}
@@ -4928,6 +4939,10 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.6.0
       yargs: 17.7.2
+
+  '@hookform/resolvers@3.10.0(react-hook-form@7.76.0(react@18.3.1))':
+    dependencies:
+      react-hook-form: 7.76.0(react@18.3.1)
 
   '@inquirer/external-editor@1.0.3(@types/node@20.19.41)':
     dependencies:

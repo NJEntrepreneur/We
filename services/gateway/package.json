@@ -14,16 +14,24 @@
   "dependencies": {
     "@platform/types": "workspace:*",
     "@platform/utils": "workspace:*",
-    "fastify": "^4.27.0",
     "@fastify/cors": "^9.0.0",
     "@fastify/helmet": "^11.1.0",
     "@fastify/http-proxy": "^9.4.0",
     "@fastify/rate-limit": "^9.1.0",
+    "@opentelemetry/api": "^1.8.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.51.0",
+    "@opentelemetry/resources": "^1.24.0",
+    "@opentelemetry/sdk-node": "^0.51.0",
+    "@opentelemetry/semantic-conventions": "^1.24.0",
+    "fastify": "^4.27.0",
+    "fastify-plugin": "^4.5.1",
     "jose": "^5.4.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.0",
     "vitest": "^1.6.0"

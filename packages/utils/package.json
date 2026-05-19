@@ -6,6 +6,22 @@
     ".": {
       "import": "./src/index.ts",
       "types": "./src/index.ts"
+    },
+    "./logger": {
+      "import": "./src/logger.ts",
+      "types": "./src/logger.ts"
+    },
+    "./config": {
+      "import": "./src/config.ts",
+      "types": "./src/config.ts"
+    },
+    "./crypto": {
+      "import": "./src/crypto.ts",
+      "types": "./src/crypto.ts"
+    },
+    "./flags": {
+      "import": "./src/flags.ts",
+      "types": "./src/flags.ts"
     }
   },
   "scripts": {
@@ -14,7 +30,11 @@
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "unleash-client": "^5.0.0"
+  },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "typescript": "^5.4.0",
     "vitest": "^1.6.0"
   }

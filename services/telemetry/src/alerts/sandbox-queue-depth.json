@@ -1,0 +1,36 @@
+{
+  "uid": "platform-sandbox-queue-depth",
+  "title": "Execution Sandbox Queue Depth High",
+  "orgID": 1,
+  "folderUID": "platform-alerts",
+  "ruleGroup": "platform-slos",
+  "for": "2m",
+  "isPaused": false,
+  "condition": "A",
+  "noDataState": "NoData",
+  "execErrState": "Error",
+  "labels": {
+    "severity": "warning",
+    "team": "platform",
+    "action": "warn"
+  },
+  "annotations": {
+    "summary": "Execution sandbox queue depth above 100",
+    "description": "The execution sandbox queue depth is {{ $values.A.Value }}. This indicates the sandbox workers cannot keep up with incoming execution requests. Consider scaling the exec-sandbox service.",
+    "runbook_url": "https://wiki.example.com/runbooks/sandbox-queue-depth"
+  },
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "datasourceUid": "prometheus",
+      "relativeTimeRange": { "from": 300, "to": 0 },
+      "model": {
+        "refId": "A",
+        "expr": "exec_queue_depth > 100",
+        "intervalMs": 1000,
+        "maxDataPoints": 43200
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "uid": "platform-p99-latency",
+  "title": "High p99 Latency",
+  "orgID": 1,
+  "folderUID": "platform-alerts",
+  "ruleGroup": "platform-slos",
+  "for": "5m",
+  "isPaused": false,
+  "condition": "A",
+  "noDataState": "NoData",
+  "execErrState": "Error",
+  "labels": {
+    "severity": "warning",
+    "team": "platform",
+    "action": "warn"
+  },
+  "annotations": {
+    "summary": "p99 latency above 2s on {{ $labels.service }} {{ $labels.route }}",
+    "description": "The 99th-percentile request latency on {{ $labels.service }} route {{ $labels.route }} is {{ $values.A.Value | humanizeDuration }}. Check for slow queries or downstream dependency issues.",
+    "runbook_url": "https://wiki.example.com/runbooks/high-latency"
+  },
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "datasourceUid": "prometheus",
+      "relativeTimeRange": { "from": 600, "to": 0 },
+      "model": {
+        "refId": "A",
+        "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_ms_bucket[5m])) by (service, route, le)) / 1000 > 2",
+        "intervalMs": 1000,
+        "maxDataPoints": 43200
+      }
+    }
+  ]
+}

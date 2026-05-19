@@ -498,6 +498,9 @@ importers:
 
   services/gateway:
     dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.1049.0
+        version: 3.1049.0
       '@fastify/cors':
         specifier: ^9.0.0
         version: 9.0.1

@@ -30,6 +30,11 @@ export interface PlatformEventMap {
   'exec.started':           { executionId: string; language: string };
   'exec.completed':         { executionId: string; exitCode: number; durationMs: number };
   'exec.timeout':           { executionId: string };
+
+  // Collaboration
+  'collab.user-joined':     { workspaceId: string; userId: string; clientId: string };
+  'collab.user-left':       { workspaceId: string; userId: string; clientId: string };
+  'collab.document-saved':  { workspaceId: string };
 }
 
 export type PlatformEventType = keyof PlatformEventMap;

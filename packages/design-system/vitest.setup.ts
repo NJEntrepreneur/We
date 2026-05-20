@@ -10,12 +10,16 @@ globalThis.ResizeObserver = ResizeObserverStub;
 
 // Radix Tooltip / Dropdown use PointerEvent
 if (!globalThis.PointerEvent) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (globalThis as any).PointerEvent = class PointerEvent extends MouseEvent {
+  class PointerEventStub extends MouseEvent {
     constructor(type: string, init?: PointerEventInit) {
       super(type, init);
     }
-  };
+  }
+  Object.defineProperty(globalThis, 'PointerEvent', {
+    value: PointerEventStub,
+    writable: true,
+    configurable: true,
+  });
 }
 
 // Suppress Radix animation warnings in test output

@@ -1,17 +1,20 @@
 import { useEffect, useRef } from 'react';
+import { z } from 'zod';
 import { RefreshResponseSchema } from '@platform/types';
 import { useAuthStore } from '../store/auth.js';
 import { apiRequest } from '../lib/api.js';
 
 const REFRESH_BUFFER_MS = 60 * 1000; // refresh 60 s before expiry
 
+const JwtExpSchema = z.object({ exp: z.number().optional() }).passthrough();
+
 function parseTokenExp(token: string): number | null {
   const parts = token.split('.');
   if (parts.length !== 3) return null;
   try {
     const segment = parts[1]!.replace(/-/g, '+').replace(/_/g, '/');
-    const json = JSON.parse(atob(segment)) as Record<string, unknown>;
-    return typeof json['exp'] === 'number' ? json['exp'] : null;
+    const result = JwtExpSchema.safeParse(JSON.parse(atob(segment)));
+    return result.success ? (result.data.exp ?? null) : null;
   } catch {
     return null;
   }
@@ -40,7 +43,7 @@ export function useSilentRefresh(): void {
     timerRef.current = setTimeout(() => {
       void (async () => {
         try {
-          const raw = await apiRequest<unknown>('/auth/refresh', {
+          const raw = await apiRequest('/auth/refresh', {
             method: 'POST',
             token: accessToken,
           });

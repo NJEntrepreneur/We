@@ -11,7 +11,7 @@ const exporter = new OTLPTraceExporter({
 });
 
 const sdk = new NodeSDK({
-  resource: new Resource({ [SEMRESATTRS_SERVICE_NAME]: 'auth' }),
+  resource: new Resource({ [SEMRESATTRS_SERVICE_NAME]: 'telemetry' }),
   traceExporter: exporter,
 });
 

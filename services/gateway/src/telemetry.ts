@@ -2,11 +2,12 @@ import { NodeSDK } from '@opentelemetry/sdk-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
 import { SEMRESATTRS_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
+import { createConfigReader } from '@platform/utils';
 
-// process.env access is permitted here — this is the bootstrap entry point
-// that runs before createConfigReader is available.
+const cfg = createConfigReader();
+
 const exporter = new OTLPTraceExporter({
-  url: process.env['OTEL_EXPORTER_OTLP_ENDPOINT'] ?? 'http://localhost:4318/v1/traces',
+  url: cfg.withDefault('OTEL_EXPORTER_OTLP_ENDPOINT', 'http://localhost:4318/v1/traces'),
 });
 
 const sdk = new NodeSDK({

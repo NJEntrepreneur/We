@@ -3,14 +3,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
-    "outDir": "dist",
-    "rootDir": "src"
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "outDir": "dist"
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../../packages/sdk-types" },
-    { "path": "../../packages/utils" },
-    { "path": "../../packages/event-bus" }
-  ]
+  "include": ["src"]
 }

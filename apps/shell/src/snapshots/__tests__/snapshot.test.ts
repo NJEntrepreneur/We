@@ -120,7 +120,7 @@ describe('exportSnapshot', () => {
 
   it('POSTs the snapshot to /snapshots with the auth token and returns the id', async () => {
     const mockId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ id: mockId }), { status: 200 }),
     ));
 
@@ -138,14 +138,14 @@ describe('exportSnapshot', () => {
   });
 
   it('throws when the server responds with a non-ok status', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(null, { status: 500 }),
     ));
     await expect(exportSnapshot(makeSnapshot(), 'tok')).rejects.toThrow('500');
   });
 
   it('throws when the server returns an invalid response body', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ notId: true }), { status: 200 }),
     ));
     await expect(exportSnapshot(makeSnapshot(), 'tok')).rejects.toThrow();
@@ -159,7 +159,7 @@ describe('importSnapshot', () => {
 
   it('GETs /snapshots/:id with the auth token and validates the response', async () => {
     const snap = makeSnapshot();
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify(snap), { status: 200 }),
     ));
 
@@ -174,14 +174,14 @@ describe('importSnapshot', () => {
   });
 
   it('throws when the server returns a non-ok status', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(null, { status: 404 }),
     ));
     await expect(importSnapshot('bad-id', 'tok')).rejects.toThrow('404');
   });
 
   it('throws when the server returns JSON that fails schema validation', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ version: '99', broken: true }), { status: 200 }),
     ));
     await expect(importSnapshot('id', 'tok')).rejects.toThrow();
@@ -198,7 +198,7 @@ describe('useSnapshotStore', () => {
 
   it('transitions to success and stores the id on a successful export', async () => {
     const mockId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ id: mockId }), { status: 200 }),
     ));
 
@@ -210,7 +210,7 @@ describe('useSnapshotStore', () => {
   });
 
   it('transitions to error when export fails', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(null, { status: 503 }),
     ));
     await expect(
@@ -222,7 +222,7 @@ describe('useSnapshotStore', () => {
 
   it('transitions to success and returns the snapshot on a successful import', async () => {
     const snap = makeSnapshot();
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(JSON.stringify(snap), { status: 200 }),
     ));
 
@@ -232,7 +232,7 @@ describe('useSnapshotStore', () => {
   });
 
   it('transitions to error when import fails', async () => {
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(null, { status: 404 }),
     ));
     await expect(

@@ -99,13 +99,13 @@ describe('MessageBridge — origin verification', () => {
   let pluginWindow: Window;
   let gate: PermissionGate;
   let bridge: MessageBridge;
-  let handler: ReturnType<typeof vi.fn>;
+  let handler: ReturnType<typeof vi.fn<[unknown], Promise<unknown>>>;
 
   beforeEach(() => {
     pluginWindow = makeFakeWindow();
     gate = new PermissionGate(['fs.read']);
     bridge = new MessageBridge(pluginWindow, TOKEN, gate, 'com.test.plugin');
-    handler = vi.fn().mockResolvedValue({ content: 'file-data' });
+    handler = vi.fn<[unknown], Promise<unknown>>().mockResolvedValue({ content: 'file-data' });
     bridge.registerHandler('fs.read', handler);
     bridge.start();
   });

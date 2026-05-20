@@ -116,7 +116,7 @@ export class MessageBridge {
   private async _handleRequest(request: {
     id: string;
     method: string;
-    params: unknown;
+    params?: unknown;
     capabilityToken: string;
   }): Promise<void> {
     // §5: verify scoped capability token

@@ -116,7 +116,7 @@ describe('telemetry service', () => {
   // ── Loki forwarding ────────────────────────────────────────────────────────
 
   it('POST /audit with loki configured calls loki writer', async () => {
-    const mockWrite = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
+    const mockWrite = vi.fn<[], Promise<void>>().mockResolvedValue(undefined);
     const mockLoki = { writeAudit: mockWrite } as unknown as InstanceType<typeof LokiWriter>;
 
     const lokiFastify = await buildServer(makeExporter(), mockLoki);
@@ -137,7 +137,7 @@ describe('telemetry service', () => {
   });
 
   it('POST /audit continues even when loki write fails', async () => {
-    const mockWrite = vi.fn<() => Promise<void>>().mockRejectedValue(new Error('Loki down'));
+    const mockWrite = vi.fn<[], Promise<void>>().mockRejectedValue(new Error('Loki down'));
     const mockLoki = { writeAudit: mockWrite } as unknown as InstanceType<typeof LokiWriter>;
 
     const lokiFastify = await buildServer(makeExporter(), mockLoki);

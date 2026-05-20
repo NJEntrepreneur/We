@@ -27,7 +27,7 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<ArrayBuffe
     ['deriveBits'],
   );
   return globalThis.crypto.subtle.deriveBits(
-    { name: 'PBKDF2', hash: 'SHA-256', salt, iterations: ITERATIONS },
+    { name: 'PBKDF2', hash: 'SHA-256', salt: new Uint8Array(salt), iterations: ITERATIONS },
     keyMaterial,
     KEY_BITS,
   );

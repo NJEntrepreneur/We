@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as Y from 'yjs';
-import { WebSocket } from 'ws';
+import { WebSocket, type ClientOptions } from 'ws';
 import { SignJWT } from 'jose';
 import type { AddressInfo } from 'node:net';
 import type { FastifyInstance } from 'fastify';
@@ -62,7 +62,7 @@ interface BufWs extends WebSocket {
   _waiters: Array<(buf: Buffer) => void>;
 }
 
-function openWs(url: string, opts?: ConstructorParameters<typeof WebSocket>[1]): Promise<BufWs> {
+function openWs(url: string, opts?: ClientOptions): Promise<BufWs> {
   return new Promise<BufWs>((resolve, reject) => {
     const ws = new WebSocket(url, opts) as BufWs;
     ws._buf = [];

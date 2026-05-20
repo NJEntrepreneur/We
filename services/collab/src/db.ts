@@ -22,5 +22,5 @@ export function getDb(): CollabDb {
   if (_client === undefined) {
     _client = new PrismaClient();
   }
-  return _client;
+  return _client as unknown as CollabDb;
 }

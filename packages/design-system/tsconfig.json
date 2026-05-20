@@ -6,11 +6,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "outDir": "dist",
-    "rootDir": "src",
-    "composite": true
+    "rootDir": "src"
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../sdk-types" }
-  ]
+  "include": ["src"]
 }

@@ -1,4 +1,3 @@
-import mitt from 'mitt';
 import type { Role } from '@platform/types';
 
 // ── Event map ─────────────────────────────────────────────────────────────────
@@ -30,6 +29,11 @@ export interface PlatformEventMap {
   'exec.started':           { executionId: string; language: string };
   'exec.completed':         { executionId: string; exitCode: number; durationMs: number };
   'exec.timeout':           { executionId: string };
+
+  // Collaboration
+  'collab.user-joined':     { workspaceId: string; userId: string; clientId: string };
+  'collab.user-left':       { workspaceId: string; userId: string; clientId: string };
+  'collab.document-saved':  { workspaceId: string };
 }
 
 export type PlatformEventType = keyof PlatformEventMap;
@@ -38,9 +42,11 @@ export type PlatformEventHandler<K extends PlatformEventType> = (
   event: PlatformEventMap[K],
 ) => void;
 
+// ── Internal handler store ────────────────────────────────────────────────────
+
+type AnyHandler = (event: PlatformEventMap[PlatformEventType]) => void;
+
 // ── Public interface ──────────────────────────────────────────────────────────
-// Wraps mitt and intentionally omits the '*' wildcard so every call site
-// must name a concrete event key from PlatformEventMap.
 
 export interface EventBus {
   /** Subscribe to an event. */
@@ -57,22 +63,35 @@ export interface EventBus {
 }
 
 // ── Factory ───────────────────────────────────────────────────────────────────
-// No module-level singleton — callers own the lifecycle.
+// Minimal typed pub/sub — no external dependency to avoid CJS/ESM interop
+// issues with mitt under NodeNext module resolution in TS 5.9+.
 
 export function createEventBus(): EventBus {
-  const emitter = mitt<PlatformEventMap>();
+  const all = new Map<string, AnyHandler[]>();
 
   return {
-    on(type, handler) {
-      emitter.on(type, handler);
+    on<K extends PlatformEventType>(type: K, handler: PlatformEventHandler<K>): void {
+      const list = all.get(type);
+      if (list !== undefined) {
+        list.push(handler as AnyHandler);
+      } else {
+        all.set(type, [handler as AnyHandler]);
+      }
     },
 
-    off(type, handler) {
-      emitter.off(type, handler);
+    off<K extends PlatformEventType>(type: K, handler: PlatformEventHandler<K>): void {
+      const list = all.get(type);
+      if (list === undefined) return;
+      const idx = list.indexOf(handler as AnyHandler);
+      if (idx !== -1) list.splice(idx, 1);
     },
 
-    emit(type, event) {
-      emitter.emit(type, event);
+    emit<K extends PlatformEventType>(type: K, event: PlatformEventMap[K]): void {
+      const list = all.get(type);
+      if (list === undefined) return;
+      for (const h of list.slice()) {
+        h(event as PlatformEventMap[PlatformEventType]);
+      }
     },
 
     once<K extends PlatformEventType>(type: K, handler: PlatformEventHandler<K>): void {
@@ -82,10 +101,10 @@ export function createEventBus(): EventBus {
       const wrapper: PlatformEventHandler<K> = (event) => {
         if (done) return;
         done = true;
-        emitter.off(type, wrapper);
+        this.off(type, wrapper);
         handler(event);
       };
-      emitter.on(type, wrapper);
+      this.on(type, wrapper);
     },
   };
 }

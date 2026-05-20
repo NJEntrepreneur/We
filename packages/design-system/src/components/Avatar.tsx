@@ -7,6 +7,7 @@ export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 export interface AvatarRootProps
   extends React.ComponentPropsWithoutRef<typeof RadixAvatar.Root> {
   size?: AvatarSize;
+  children?: React.ReactNode;
 }
 
 const sizeClasses = {

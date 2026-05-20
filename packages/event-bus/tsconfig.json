@@ -4,12 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["ES2022"],
-    "outDir": "dist",
-    "rootDir": "src",
-    "composite": true
+    "outDir": "dist"
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../sdk-types" }
-  ]
+  "include": ["src"]
 }

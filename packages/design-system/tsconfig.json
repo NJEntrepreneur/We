@@ -7,10 +7,7 @@
     "jsx": "react-jsx",
     "outDir": "dist",
     "rootDir": "src",
-    "composite": true
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../sdk-types" }
-  ]
+  "include": ["src"]
 }

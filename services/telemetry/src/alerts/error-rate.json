@@ -1,0 +1,36 @@
+{
+  "uid": "platform-error-rate",
+  "title": "High Error Rate",
+  "orgID": 1,
+  "folderUID": "platform-alerts",
+  "ruleGroup": "platform-slos",
+  "for": "5m",
+  "isPaused": false,
+  "condition": "A",
+  "noDataState": "NoData",
+  "execErrState": "Error",
+  "labels": {
+    "severity": "critical",
+    "team": "platform",
+    "action": "page"
+  },
+  "annotations": {
+    "summary": "Error rate above 1% on {{ $labels.service }}",
+    "description": "The 5-minute error rate on service {{ $labels.service }} is {{ $values.A.Value | humanizePercentage }}. Investigate logs and recent deployments.",
+    "runbook_url": "https://wiki.example.com/runbooks/high-error-rate"
+  },
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "datasourceUid": "prometheus",
+      "relativeTimeRange": { "from": 600, "to": 0 },
+      "model": {
+        "refId": "A",
+        "expr": "sum(rate(http_server_errors_total[5m])) by (service) / sum(rate(http_requests_total[5m])) by (service) > 0.01",
+        "intervalMs": 1000,
+        "maxDataPoints": 43200
+      }
+    }
+  ]
+}

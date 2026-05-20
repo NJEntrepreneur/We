@@ -1,0 +1,36 @@
+{
+  "uid": "platform-auth-failure-rate",
+  "title": "Auth Failure Rate High per IP",
+  "orgID": 1,
+  "folderUID": "platform-alerts",
+  "ruleGroup": "platform-slos",
+  "for": "1m",
+  "isPaused": false,
+  "condition": "A",
+  "noDataState": "NoData",
+  "execErrState": "Error",
+  "labels": {
+    "severity": "critical",
+    "team": "platform",
+    "action": "block-and-alert"
+  },
+  "annotations": {
+    "summary": "Auth failure rate above 10/min from IP {{ $labels.ip_address }}",
+    "description": "IP {{ $labels.ip_address }} has generated {{ $values.A.Value }} authentication failures per minute. This may indicate a brute-force or credential-stuffing attack. The IP should be blocked automatically by the rate limiter.",
+    "runbook_url": "https://wiki.example.com/runbooks/auth-failure-rate"
+  },
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "datasourceUid": "prometheus",
+      "relativeTimeRange": { "from": 300, "to": 0 },
+      "model": {
+        "refId": "A",
+        "expr": "sum(rate(auth_failures_total[1m])) by (ip_address) * 60 > 10",
+        "intervalMs": 1000,
+        "maxDataPoints": 43200
+      }
+    }
+  ]
+}

@@ -33,7 +33,7 @@ export async function apiRequest<T>(
     method,
     headers,
     credentials: 'include',
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: body !== undefined ? JSON.stringify(body) : null,
   });
 
   if (!response.ok) {

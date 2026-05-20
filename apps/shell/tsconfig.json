@@ -7,13 +7,7 @@
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../../packages/sdk-types" },
-    { "path": "../../packages/utils" },
-    { "path": "../../packages/event-bus" },
-    { "path": "../../packages/design-system" }
-  ]
+  "include": ["src"]
 }

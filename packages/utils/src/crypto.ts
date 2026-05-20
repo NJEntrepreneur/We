@@ -1,9 +1,9 @@
 // Uses the Web Crypto API (globalThis.crypto) — available in Node 20+ and all modern browsers.
 // §17: no eval, no new Function — all crypto is via the platform API.
 
-function toUint8Array(data: string | Uint8Array | ArrayBuffer): Uint8Array {
+function toUint8Array(data: string | Uint8Array | ArrayBuffer): Uint8Array<ArrayBuffer> {
   if (typeof data === 'string') return new TextEncoder().encode(data);
-  if (data instanceof Uint8Array) return data;
+  if (data instanceof Uint8Array) return new Uint8Array(data);
   return new Uint8Array(data);
 }
 
@@ -13,7 +13,7 @@ function bufferToHex(buffer: ArrayBuffer): string {
   ).join('');
 }
 
-function hexToUint8Array(hex: string): Uint8Array {
+function hexToUint8Array(hex: string): Uint8Array<ArrayBuffer> {
   if (hex.length % 2 !== 0) throw new Error('Hex string must have even length');
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {

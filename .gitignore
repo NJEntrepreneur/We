@@ -48,6 +48,4 @@ test-results/
 # TypeScript
 *.tsbuildinfo
 
-# Changesets
-.changeset/*.md
-!.changeset/README.md
+# Changesets — .md files ARE committed (consumed by pnpm changeset:version)

@@ -1,12 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useAuthStore } from '../store/auth.js';
+import { Role } from '@platform/types';
 import type { AuthUser } from '@platform/types';
 
 const mockUser: AuthUser = {
   id: '00000000-0000-0000-0000-000000000001',
   email: 'test@example.com',
   displayName: 'Test User',
-  role: 'developer',
+  role: Role.Developer,
 };
 
 describe('useAuthStore', () => {
@@ -48,7 +49,7 @@ describe('useAuthStore', () => {
       id: '00000000-0000-0000-0000-000000000002',
       email: 'other@example.com',
       displayName: 'Other User',
-      role: 'viewer',
+      role: Role.Viewer,
     };
     useAuthStore.getState().setAuth('tok-1', mockUser);
     useAuthStore.getState().setAuth('tok-2', otherUser);

@@ -5,12 +5,8 @@
     "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-    "outDir": "dist",
-    "rootDir": "src",
-    "composite": true
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "outDir": "dist"
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../sdk-types" }
-  ]
+  "include": ["src"]
 }

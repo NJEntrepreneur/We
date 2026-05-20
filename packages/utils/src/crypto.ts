@@ -1,10 +1,12 @@
 // Uses the Web Crypto API (globalThis.crypto) — available in Node 20+ and all modern browsers.
 // §17: no eval, no new Function — all crypto is via the platform API.
 
-function toUint8Array(data: string | Uint8Array | ArrayBuffer): Uint8Array {
-  if (typeof data === 'string') return new TextEncoder().encode(data);
-  if (data instanceof Uint8Array) return data;
-  return new Uint8Array(data);
+// new Uint8Array(arrayLike) uses the ArrayLike<number> overload and returns Uint8Array<ArrayBuffer>,
+// which satisfies the BufferSource constraint required by SubtleCrypto methods.
+function toArrayBuffer(data: string | Uint8Array | ArrayBuffer): Uint8Array<ArrayBuffer> {
+  if (typeof data === 'string') return new Uint8Array(new TextEncoder().encode(data));
+  if (data instanceof Uint8Array) return new Uint8Array(data);
+  return new Uint8Array(new Uint8Array(data));
 }
 
 function bufferToHex(buffer: ArrayBuffer): string {
@@ -13,7 +15,7 @@ function bufferToHex(buffer: ArrayBuffer): string {
   ).join('');
 }
 
-function hexToUint8Array(hex: string): Uint8Array {
+function hexToUint8Array(hex: string): Uint8Array<ArrayBuffer> {
   if (hex.length % 2 !== 0) throw new Error('Hex string must have even length');
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
@@ -37,14 +39,14 @@ export async function hash(
   algorithm: 'SHA-256' | 'SHA-384',
   data: string | Uint8Array | ArrayBuffer,
 ): Promise<string> {
-  const digest = await globalThis.crypto.subtle.digest(algorithm, toUint8Array(data));
+  const digest = await globalThis.crypto.subtle.digest(algorithm, toArrayBuffer(data));
   return bufferToHex(digest);
 }
 
-async function importHmacKey(secret: string): Promise<CryptoKey> {
+async function importHmacKey(secret: string) {
   return globalThis.crypto.subtle.importKey(
     'raw',
-    new TextEncoder().encode(secret),
+    new Uint8Array(new TextEncoder().encode(secret)),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign', 'verify'],
@@ -54,7 +56,11 @@ async function importHmacKey(secret: string): Promise<CryptoKey> {
 /** Returns a hex-encoded HMAC-SHA-256 signature. */
 export async function hmacSign(secret: string, data: string): Promise<string> {
   const key = await importHmacKey(secret);
-  const sig = await globalThis.crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
+  const sig = await globalThis.crypto.subtle.sign(
+    'HMAC',
+    key,
+    new Uint8Array(new TextEncoder().encode(data)),
+  );
   return bufferToHex(sig);
 }
 
@@ -66,7 +72,12 @@ export async function hmacVerify(
 ): Promise<boolean> {
   const key = await importHmacKey(secret);
   const sigBytes = hexToUint8Array(signature);
-  return globalThis.crypto.subtle.verify('HMAC', key, sigBytes, new TextEncoder().encode(data));
+  return globalThis.crypto.subtle.verify(
+    'HMAC',
+    key,
+    sigBytes,
+    new Uint8Array(new TextEncoder().encode(data)),
+  );
 }
 
 /**
@@ -74,7 +85,7 @@ export async function hmacVerify(
  * `integrity` field.  Accepts raw file content as string, Uint8Array, or ArrayBuffer.
  */
 export async function sriHash(content: string | Uint8Array | ArrayBuffer): Promise<string> {
-  const digest = await globalThis.crypto.subtle.digest('SHA-384', toUint8Array(content));
+  const digest = await globalThis.crypto.subtle.digest('SHA-384', toArrayBuffer(content));
   return `sha384-${bufferToBase64(digest)}`;
 }
 

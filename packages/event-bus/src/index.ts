@@ -5,7 +5,7 @@ import type { Role } from '@platform/types';
 // §11: <domain>.<entity>.<verb> naming; every payload is an explicit object type.
 // Add new events here — never use untyped emit('some-string', data).
 
-export interface PlatformEventMap {
+export type PlatformEventMap = {
   // Editor
   'editor.file.opened':     { filePath: string; workspaceId: string };
   'editor.file.saved':      { filePath: string; workspaceId: string };
@@ -30,7 +30,7 @@ export interface PlatformEventMap {
   'exec.started':           { executionId: string; language: string };
   'exec.completed':         { executionId: string; exitCode: number; durationMs: number };
   'exec.timeout':           { executionId: string };
-}
+};
 
 export type PlatformEventType = keyof PlatformEventMap;
 

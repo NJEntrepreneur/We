@@ -6,7 +6,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   /** Rendered as an accessible <label> element. */
   label?: string;
   /** Displayed below the input in red; sets aria-invalid. */
-  error?: string;
+  error?: string | undefined;
   /** Displayed below the input as hint text. */
   hint?: string;
   /** Wrapping container className. */

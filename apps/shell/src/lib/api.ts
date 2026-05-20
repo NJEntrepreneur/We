@@ -29,12 +29,12 @@ export async function apiRequest(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${config.gatewayUrl}${path}`, {
-    method,
-    headers,
-    credentials: 'include',
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+  const fetchOptions: RequestInit = { method, headers, credentials: 'include' };
+  if (body !== undefined) {
+    fetchOptions.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(`${config.gatewayUrl}${path}`, fetchOptions);
 
   if (!response.ok) {
     throw new ApiError(response.status, response.statusText);

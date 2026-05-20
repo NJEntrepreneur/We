@@ -8,6 +8,7 @@
     "build": "tsc --noEmit",
     "start": "node dist/main.js",
     "pretest": "prisma generate",
+    "prelint": "prisma generate",
     "test": "vitest run",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",

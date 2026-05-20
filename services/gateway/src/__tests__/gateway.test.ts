@@ -55,8 +55,9 @@ describe('X-Trace-Id header', () => {
 
   it('generates an x-trace-id header when none is provided', async () => {
     const res = await supertest(fastify.server).get('/nonexistent-route');
-    expect(typeof res.headers['x-trace-id']).toBe('string');
-    expect(res.headers['x-trace-id'].length).toBeGreaterThan(0);
+    const traceId = res.headers['x-trace-id'] ?? '';
+    expect(typeof traceId).toBe('string');
+    expect(traceId.length).toBeGreaterThan(0);
   });
 
   it('generates different trace IDs for different requests', async () => {

@@ -3,10 +3,10 @@ import { ZodError, type ZodSchema } from 'zod';
 import {
   RegisterRequestSchema,
   LoginRequestSchema,
+  RoleSchema,
   type AuthUser,
 } from '@platform/types';
 import { hash, randomId, createLogger } from '@platform/utils';
-import { Role } from '@platform/types';
 
 async function parseBody<T>(
   schema: ZodSchema<T>,
@@ -118,13 +118,14 @@ export async function registerAuthRoutes(
         },
       });
 
-      const accessToken = await issueAccessToken(userId, user.role as Role, accessSecret);
+      const role = RoleSchema.parse(user.role);
+      const accessToken = await issueAccessToken(userId, role, accessSecret);
 
       const authUser: AuthUser = {
         id:          user.id,
         email:       user.email,
         displayName: user.displayName,
-        role:        user.role as Role,
+        role,
       };
 
       setRefreshCookie(reply, refreshToken, config.secureCookie);
@@ -163,13 +164,14 @@ export async function registerAuthRoutes(
         },
       });
 
-      const accessToken = await issueAccessToken(user.id, user.role as Role, accessSecret);
+      const role = RoleSchema.parse(user.role);
+      const accessToken = await issueAccessToken(user.id, role, accessSecret);
 
       const authUser: AuthUser = {
         id:          user.id,
         email:       user.email,
         displayName: user.displayName,
-        role:        user.role as Role,
+        role,
       };
 
       setRefreshCookie(reply, refreshToken, config.secureCookie);
@@ -253,7 +255,7 @@ export async function registerAuthRoutes(
         },
       });
 
-      const accessToken = await issueAccessToken(user.id, user.role as Role, accessSecret);
+      const accessToken = await issueAccessToken(user.id, RoleSchema.parse(user.role), accessSecret);
 
       setRefreshCookie(reply, newRefreshToken, config.secureCookie);
       logger.info('Token refreshed', { userId: user.id });

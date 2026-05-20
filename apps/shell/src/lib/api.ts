@@ -16,10 +16,10 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiRequest<T>(
+export async function apiRequest(
   path: string,
   options: RequestOptions = {},
-): Promise<T> {
+): Promise<unknown> {
   const { method = 'GET', body, token } = options;
 
   const headers: Record<string, string> = {
@@ -40,5 +40,5 @@ export async function apiRequest<T>(
     throw new ApiError(response.status, response.statusText);
   }
 
-  return response.json() as Promise<T>;
+  return response.json();
 }

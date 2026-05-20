@@ -44,10 +44,10 @@ export async function registerRoutes(
     });
   });
 
-  // ── /exec/* — JWT required ────────────────────────────────────────────────────
+  // ── /exec/* — JWT required, 10 executions/min per user (§9) ─────────────────
   await fastify.register(async (execScope: FastifyInstance) => {
     await execScope.register(rateLimit, {
-      max: 200,
+      max: 10,
       timeWindow: '1 minute',
       keyGenerator: (req) => req.accessTokenPayload?.sub ?? req.ip,
     });

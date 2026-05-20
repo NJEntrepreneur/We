@@ -29,7 +29,7 @@ export function LoginPage(): React.ReactElement {
 
   async function onSubmit(data: LoginRequest): Promise<void> {
     try {
-      const raw = await apiRequest<unknown>('/auth/login', {
+      const raw = await apiRequest('/auth/login', {
         method: 'POST',
         body: data,
       });

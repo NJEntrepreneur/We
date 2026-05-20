@@ -7,13 +7,7 @@ const ConfigSchema = z.object({
 
 export type AppConfig = z.infer<typeof ConfigSchema>;
 
-export function buildConfig(env: Record<string, string | undefined>): AppConfig {
-  return ConfigSchema.parse({
-    gatewayUrl: env['VITE_GATEWAY_URL'],
-    collabUrl: env['VITE_COLLAB_URL'],
-  });
-}
-
-export const config: AppConfig = buildConfig(
-  import.meta.env as Record<string, string | undefined>,
-);
+export const config: AppConfig = ConfigSchema.parse({
+  gatewayUrl: import.meta.env['VITE_GATEWAY_URL'],
+  collabUrl: import.meta.env['VITE_COLLAB_URL'],
+});

@@ -1,13 +1,13 @@
 import fp from 'fastify-plugin';
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { jwtVerify, type JWTPayload } from 'jose';
+import { jwtVerify } from 'jose';
 import { AccessTokenPayloadSchema, type AccessTokenPayload } from '@platform/types';
 
 export async function verifyAccessToken(
   token: string,
   secret: Uint8Array,
 ): Promise<AccessTokenPayload> {
-  const { payload } = await jwtVerify(token, secret) as { payload: JWTPayload & Record<string, unknown> };
+  const { payload } = await jwtVerify(token, secret);
   return AccessTokenPayloadSchema.parse(payload);
 }
 
